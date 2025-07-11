@@ -1,6 +1,6 @@
 {
-  "name": "pixi.js",
-  "version": "8.11.0",
+  "name": "@setsnail-erik/pixi.js-patched",
+  "version": "8.11.7",
   "author": "PixiJS Team",
   "homepage": "http://pixijs.com/",
   "bugs": "https://github.com/pixijs/pixijs/issues",

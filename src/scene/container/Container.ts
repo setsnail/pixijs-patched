@@ -1876,6 +1876,46 @@ export class Container<C extends ContainerChild = ContainerChild> extends EventE
         this._onUpdate();
     }
 
+    private _hardTintRgba?: ColorSource;
+    public hardTintAbgr?: number;
+    public renderedHardTintAbgr?: number;
+
+    public get hardTint()
+    {
+        return this._hardTintRgba;
+    }
+
+    public set hardTint(value: ColorSource | undefined)
+    {
+        if (value === undefined)
+        {
+            const shouldUpdate = this._hardTintRgba !== undefined;
+
+            this._hardTintRgba = undefined;
+            this.hardTintAbgr = undefined;
+
+            if (shouldUpdate)
+            {
+                this._updateFlags |= UPDATE_COLOR;
+                this._onUpdate();
+            }
+
+            return;
+        }
+
+        this._hardTintRgba = value;
+
+        const tempColor = Color.shared.setValue(value);
+        const bgr = tempColor.toBgrNumber();
+        const abgr = bgr + (((tempColor.alpha * 255) | 0) << 24);
+
+        this.hardTintAbgr = abgr;
+
+        this._updateFlags |= UPDATE_COLOR;
+
+        this._onUpdate();
+    }
+
     /**
      * The tint applied to the sprite.
      *

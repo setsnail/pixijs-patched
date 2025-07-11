@@ -277,7 +277,7 @@ export abstract class Batcher
 {
     public static defaultOptions: Partial<BatcherOptions> = {
         maxTextures: null,
-        attributesInitialSize: 4,
+        attributesInitialSize: 5,
         indicesInitialSize: 6,
     };
 

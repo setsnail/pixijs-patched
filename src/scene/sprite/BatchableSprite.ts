@@ -36,6 +36,7 @@ export class BatchableSprite implements DefaultBatchableQuadElement
 
     get blendMode() { return this.renderable.groupBlendMode; }
     get color() { return this.renderable.groupColorAlpha; }
+    get hardTintAbgr() { return this.renderable.renderedHardTintAbgr; }
 
     public reset()
     {
