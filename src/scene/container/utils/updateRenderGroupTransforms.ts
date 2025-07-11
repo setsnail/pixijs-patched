@@ -185,6 +185,7 @@ function updateColorBlendVisibility(
 
         container.groupAlpha = groupAlpha;
         container.groupColorAlpha = container.groupColor + (((groupAlpha * 255) | 0) << 24);
+        container.renderedHardTintAbgr = container.hardTintAbgr ?? parent.renderedHardTintAbgr;
     }
 
     if (updateFlags & UPDATE_BLEND)

@@ -15,7 +15,7 @@ export class BatchGeometry extends Geometry
 {
     constructor()
     {
-        const vertexSize = 6;
+        const vertexSize = 7;
 
         const attributeBuffer = new Buffer({
             data: placeHolderBufferData,
@@ -58,6 +58,12 @@ export class BatchGeometry extends Geometry
                     format: 'uint16x2',
                     stride,
                     offset: 5 * 4,
+                },
+                aHardTintColor: {
+                    buffer: attributeBuffer,
+                    format: 'unorm8x4',
+                    stride,
+                    offset: 6 * 4,
                 },
             },
             indexBuffer

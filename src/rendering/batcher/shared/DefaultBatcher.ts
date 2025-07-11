@@ -24,6 +24,8 @@ export interface DefaultBatchElements
      */
     color: number;
 
+    hardTintAbgr?: number;
+
     /**
      * Determines whether the element should be rounded to the nearest pixel.
      * - 0: No rounding (default)
@@ -78,7 +80,7 @@ export class DefaultBatcher extends Batcher
     public name = DefaultBatcher.extension.name;
 
     /** The size of one attribute. 1 = 32 bit. x, y, u, v, color, textureIdAndRound -> total = 6 */
-    public vertexSize = 6;
+    public vertexSize = 7;
 
     constructor(options: BatcherOptions)
     {
@@ -119,6 +121,7 @@ export class DefaultBatcher extends Batcher
         const { positions, uvs } = element;
 
         const argb = element.color;
+        const hardTint = element.hardTintAbgr ?? 0x00000000;
 
         const offset = element.attributeOffset;
         const end = offset + element.attributeSize;
@@ -138,6 +141,7 @@ export class DefaultBatcher extends Batcher
 
             uint32View[index++] = argb;
             uint32View[index++] = textureIdAndRound;
+            uint32View[index++] = hardTint;
         }
     }
 
@@ -180,6 +184,7 @@ export class DefaultBatcher extends Batcher
         // _ _ _ _
         // a b g r
         const argb = element.color;
+        const hardTint = element.hardTintAbgr ?? 0x00000000;
 
         const textureIdAndRound = (textureId << 16) | (element.roundPixels & 0xFFFF);
 
@@ -191,36 +196,40 @@ export class DefaultBatcher extends Batcher
 
         uint32View[index + 4] = argb;
         uint32View[index + 5] = textureIdAndRound;
+        uint32View[index + 6] = hardTint;
 
         // xy
-        float32View[index + 6] = (a * w0) + (c * h1) + tx;
-        float32View[index + 7] = (d * h1) + (b * w0) + ty;
+        float32View[index + 7] = (a * w0) + (c * h1) + tx;
+        float32View[index + 8] = (d * h1) + (b * w0) + ty;
 
-        float32View[index + 8] = uvs.x1;
-        float32View[index + 9] = uvs.y1;
+        float32View[index + 9] = uvs.x1;
+        float32View[index + 10] = uvs.y1;
 
-        uint32View[index + 10] = argb;
-        uint32View[index + 11] = textureIdAndRound;
-
-        // xy
-        float32View[index + 12] = (a * w0) + (c * h0) + tx;
-        float32View[index + 13] = (d * h0) + (b * w0) + ty;
-
-        float32View[index + 14] = uvs.x2;
-        float32View[index + 15] = uvs.y2;
-
-        uint32View[index + 16] = argb;
-        uint32View[index + 17] = textureIdAndRound;
+        uint32View[index + 11] = argb;
+        uint32View[index + 12] = textureIdAndRound;
+        uint32View[index + 13] = hardTint;
 
         // xy
-        float32View[index + 18] = (a * w1) + (c * h0) + tx;
-        float32View[index + 19] = (d * h0) + (b * w1) + ty;
+        float32View[index + 14] = (a * w0) + (c * h0) + tx;
+        float32View[index + 15] = (d * h0) + (b * w0) + ty;
 
-        float32View[index + 20] = uvs.x3;
-        float32View[index + 21] = uvs.y3;
+        float32View[index + 16] = uvs.x2;
+        float32View[index + 17] = uvs.y2;
 
-        uint32View[index + 22] = argb;
-        uint32View[index + 23] = textureIdAndRound;
+        uint32View[index + 18] = argb;
+        uint32View[index + 19] = textureIdAndRound;
+        uint32View[index + 20] = hardTint;
+
+        // xy
+        float32View[index + 21] = (a * w1) + (c * h0) + tx;
+        float32View[index + 22] = (d * h0) + (b * w1) + ty;
+
+        float32View[index + 23] = uvs.x3;
+        float32View[index + 24] = uvs.y3;
+
+        uint32View[index + 25] = argb;
+        uint32View[index + 26] = textureIdAndRound;
+        uint32View[index + 27] = hardTint;
     }
 }
 
